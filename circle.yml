@@ -5,13 +5,14 @@ machine:
 dependencies:
   pre:
     - sudo add-apt-repository ppa:masterminds/glide -y && sudo apt-get update && sudo apt-get install glide -y
-    - mkdir -p ${HOME}/.go_project/src/
+    - sudo mkdir -p /home/ubuntu/.go_workspace/src
+    - echo $GOPATH
   override:
-    - glide install
+    - cd /home/ubuntu/.go_workspace/src/spary_go; glide install
 
 checkout:
   override:
-    - git clone https://github.com/corgisamurai/spary_go.git
+    - cd /home/ubuntu/.go_workspace/src; git clone https://github.com/corgisamurai/spary_go.git
 
 test:
   override:
