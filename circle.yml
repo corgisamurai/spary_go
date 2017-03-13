@@ -8,8 +8,12 @@ dependencies:
 
 checkout:
   override:
-    - git clone https://github.com/corgisamurai/spary_go.git
+    - git clone https://github.com/corgisamurai/spary_go.git 
 
+dependencies:
+  override:
+    - glide update
+    
 test:
   override:
     - cd spary_go
