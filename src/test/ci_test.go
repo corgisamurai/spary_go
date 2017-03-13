@@ -18,5 +18,5 @@ func execCi() string {
 
 func TestCi(t *testing.T) {
   result := execCi();
-  assertEqual(t, "ok", result)
+  assertEqual(t, "0", result)
 }
