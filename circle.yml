@@ -3,17 +3,16 @@ machine:
     Asia/Tokyo
 
 dependencies:
+  pre:
+    - sudo add-apt-repository ppa:masterminds/glide -y && sudo apt-get update && sudo apt-get install glide -y
+    - mkdir -p ${HOME}/.go_project/src/
   override:
     - glide install
 
 checkout:
   override:
-    - git clone https://github.com/corgisamurai/spary_go.git 
+    - git clone https://github.com/corgisamurai/spary_go.git
 
-dependencies:
-  override:
-    - glide update
-    
 test:
   override:
     - cd spary_go
