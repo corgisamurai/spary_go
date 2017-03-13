@@ -1,20 +1,23 @@
 machine:
   timezone:
     Asia/Tokyo
+  environment:
+    GOPATH: $GOPATH:/home/ubuntu/.go_workspace/src/spary_go
 
 dependencies:
   pre:
-    - sudo add-apt-repository ppa:masterminds/glide -y && sudo apt-get update && sudo apt-get install glide -y
-    - sudo mkdir -p /home/ubuntu/.go_workspace/src
+    - sudo add-apt-repository ppa:masterminds/glide -y && sudo apt-get update && sudo apt-get install glide -y 
     - echo $GOPATH
   override:
     - cd /home/ubuntu/.go_workspace/src/spary_go; glide install
 
 checkout:
   override:
-    - cd /home/ubuntu/.go_workspace/src; git clone https://github.com/corgisamurai/spary_go.git
+    - sudo rm -rf /home/ubuntu/.go_workspace/src/spary_go; sudo mkdir -p /home/ubuntu/.go_workspace/src; sudo chmod 777 -R /home/ubuntu/.go_workspace; cd /home/ubuntu/.go_workspace/src; git clone https://github.com/corgisamurai/spary_go.git
 
 test:
   override:
-    - cd spary_go
-    - sh ./test.sh
+    - cd /home/ubuntu/.go_workspace/src/spary_go;
+    - mysql -u root < db/init.sql
+    - mysql -u root < db/create_table.sql
+    - ROOT_PATH=/home/ubuntu/.go_workspace/src/spary_go GO_ENV=test go test test -v
