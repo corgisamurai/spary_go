@@ -3,6 +3,8 @@ package test
 import (
 	"api"
 	"encoding/json"
+	"fmt"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -12,13 +14,13 @@ import (
 )
 
 func TestShowSpa(t *testing.T) {
-	req, _ := http.NewRequest("GET", "v1/spa/1", nil)
-	res := httptest.NewRecorder()
-	api.ShowSpa(res, req)
+	// req, _ := http.NewRequest("GET", "v1/spa/1", nil)
+	// res := httptest.NewRecorder()
+	// api.ShowSpa(res, req)
 
-	if res.Code != 200 {
-		t.Fatalf("not 200, %s", res.Code)
-	}
+	// if res.Code != 200 {
+	// 	t.Fatalf("not 200, %s", res.Code)
+	// }
 
 	// data, _ := ioutil.ReadAll(res.Body)
 	// spa := new(api.Spa)
@@ -30,6 +32,25 @@ func TestShowSpa(t *testing.T) {
 	// if spa.Address != "北海道" {
 	// 	t.Fatalf("not 北海道, %s", spa.Address)
 	// }
+
+	r := mux.NewRouter()
+	r.HandleFunc("/v1/spa/{id}", api.ShowSpa)
+
+	ts := httptest.NewServer(r)
+	defer ts.Close()
+
+	url := ts.URL + "/v1/spa/1"
+	resp, err := http.Get(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	if string(body) == "404 page not found" {
+		t.Fatal("404 error")
+	}
+	fmt.Println(string(body))
+
 }
 
 func TestShowAnotherSpa(t *testing.T) {
