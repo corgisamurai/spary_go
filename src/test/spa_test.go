@@ -30,12 +30,9 @@ func TestShowSpa(t *testing.T) {
 	spa := new(api.Spa)
 	json.Unmarshal(([]byte)(string(data)), spa)
 
-	if spa.Name != "木下温泉" {
-		t.Fatalf("not 木下温泉, %s", spa.Name)
-	}
-	if spa.Address != "北海道" {
-		t.Fatalf("not 北海道, %s", spa.Address)
-	}
+	assertEqual(t, spa.Name, "木下温泉")
+	assertEqual(t, spa.Address, "北海道")
+	// assertEqual(t, spa.Url, "http://kika.pc/onsen")
 }
 
 func TestShowAnotherSpa(t *testing.T) {
@@ -58,12 +55,8 @@ func TestShowAnotherSpa(t *testing.T) {
 	spa := new(api.Spa)
 	json.Unmarshal(([]byte)(string(data)), spa)
 
-	if spa.Name != "木下温泉2" {
-		t.Fatalf("not 木下温泉2, %s", spa.Name)
-	}
-	if spa.Address != "北海道2" {
-		t.Fatalf("not 北海道2, %s", spa.Address)
-	}
+	assertEqual(t, spa.Name, "木下温泉2")
+	assertEqual(t, spa.Address, "北海道2")
 }
 
 func execShowSpaList() *api.Spas {
