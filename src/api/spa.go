@@ -17,6 +17,7 @@ type Spa struct {
 	Id      string `json:"id"`
 	Name    string `json:"name"`
 	Address string `json:"address"`
+	Url     string `json:"url"`
 }
 
 func ShowSpaList(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +28,7 @@ func ShowSpaList(w http.ResponseWriter, r *http.Request) {
 	spas := Spas{}
 	for rows.Next() {
 		spa := Spa{}
-		rows.Scan(&spa.Id, &spa.Name, &spa.Address)
+		rows.Scan(&spa.Id, &spa.Name, &spa.Address, &spa.Url)
 		spas.Spas = append(spas.Spas, spa)
 	}
 	result, _ := json.Marshal(spas)
@@ -35,17 +36,15 @@ func ShowSpaList(w http.ResponseWriter, r *http.Request) {
 }
 
 func ShowSpa(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("show spa")
 	vars := mux.Vars(r)
 	db := lib.DbOpen()
 	defer db.Close()
 
 	query := "select * from spa where id = ?"
 	row, _ := db.Query(query, vars["id"])
-	fmt.Println(vars["id"])
 	spa := Spa{}
 	for row.Next() {
-		row.Scan(&spa.Id, &spa.Name, &spa.Address)
+		row.Scan(&spa.Id, &spa.Name, &spa.Address, &spa.Url)
 	}
 
 	result, _ := json.Marshal(spa)
