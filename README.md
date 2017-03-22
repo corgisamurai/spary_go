@@ -21,4 +21,3 @@ $ sh test.sh
 $ sh watch_test.sh
 dependency: brew install fswatch
 
-## CircleCI
