@@ -13,6 +13,15 @@ import (
 	"testing"
 )
 
+type Spas struct {
+	Spas []Spa `json:"spa"`
+}
+type Spa struct {
+	Id      string `json:"id"`
+	Name    string `json:"name"`
+	Address string `json:"address"`
+}
+
 func TestShowSpa(t *testing.T) {
 	// req, _ := http.NewRequest("GET", "v1/spa/1", nil)
 	// res := httptest.NewRecorder()
@@ -52,6 +61,34 @@ func TestShowSpa(t *testing.T) {
 	fmt.Println(string(body))
 
 }
+func TestShowSpaListRequest(t *testing.T) {
+	db.Query("INSERT INTO spa (name, address) VALUES(?, ?)", "木下温泉", "北海道")
+	db.Query("INSERT INTO spa (name, address) VALUES(?, ?)", "木下温泉2", "北海道2")
+
+	r := mux.NewRouter()
+	r.HandleFunc("/v1/spas", api.ShowSpa)
+
+	ts := httptest.NewServer(r)
+	defer ts.Close()
+
+	url := ts.URL + "/v1/spas"
+	resp, err := http.Get(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
+	if string(body) == "404 page not found" {
+		t.Fatal("404 error")
+	}
+	//spas := new(Spas)
+	//result := json.Unmarshal(([]byte)(string(body)), spas)
+	//assertEqual(t, result.Spas[0].Name, "木下温泉")
+	//assertEqual(t, result.Spas[0].Address, "北海道")
+	//assertEqual(t, result.Spas[1].Name, "木下温泉2")
+	//assertEqual(t, result.Spas[1].Address, "北海道2")
+}
 
 func TestShowAnotherSpa(t *testing.T) {
 	// db.Query("INSERT INTO spa (id, name, address) VALUES(?, ?, ?)", 2, "木下温泉", "北海道")
@@ -79,6 +116,7 @@ func execShowSpaList() *api.Spas {
 	//レスポンスを構造体に変換
 	data, _ := ioutil.ReadAll(res.Body)
 	spas := new(api.Spas)
+	fmt.Println(string(data))
 	json.Unmarshal(([]byte)(string(data)), spas)
 	return spas
 }
