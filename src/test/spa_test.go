@@ -20,10 +20,10 @@ func TestShowSpa(t *testing.T) {
 	r := mux.NewRouter()
 	r.HandleFunc("/v1/spa/{id}", api.ShowSpa)
 
-	ts := httptest.NewServer(r)
-	defer ts.Close()
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
 
-	url := ts.URL + "/v1/spa/1"
+	url := testServer.URL + "/v1/spa/1"
 	resp, err := http.Get(url)
 	if err != nil {
 		t.Fatal(err)
@@ -42,20 +42,31 @@ func TestShowSpa(t *testing.T) {
 }
 
 func TestShowAnotherSpa(t *testing.T) {
-	// db.Query("INSERT INTO spa (id, name, address) VALUES(?, ?, ?)", 2, "木下温泉", "北海道")
-	// values := url.Values{}
-	// values.Set("id", "2")
-	// req, _ := http.NewRequest("GET", "v1/spa/2", strings.NewReader(values.Encode()))
-	// res := httptest.NewRecorder()
-	// api.ShowSpa(res, req)
+	db.Query("INSERT INTO spa (id, name, address) VALUES(?, ?, ?)", 1, "木下温泉", "北海道")
+	db.Query("INSERT INTO spa (id, name, address) VALUES(?, ?, ?)", 2, "木下温泉2", "北海道2")
 
-	// data, _ := ioutil.ReadAll(res.Body)
-	// spa := new(api.Spa)
-	// json.Unmarshal(([]byte)(string(data)), spa)
+	r := mux.NewRouter()
+	r.HandleFunc("/v1/spa/{id}", api.ShowSpa)
 
-	// if spa.Name != "木下温泉2" {
-	// 	t.Fatalf("not 木下温泉2, %s", spa.Name)
-	// }
+	testServer := httptest.NewServer(r)
+	defer testServer.Close()
+
+	url := testServer.URL + "/v1/spa/2"
+	resp, err := http.Get(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data, _ := ioutil.ReadAll(resp.Body)
+	spa := new(api.Spa)
+	json.Unmarshal(([]byte)(string(data)), spa)
+
+	if spa.Name != "木下温泉2" {
+		t.Fatalf("not 木下温泉2, %s", spa.Name)
+	}
+	if spa.Address != "北海道2" {
+		t.Fatalf("not 北海道2, %s", spa.Address)
+	}
 }
 
 func execShowSpaList() *api.Spas {
