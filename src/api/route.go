@@ -12,6 +12,7 @@ func Run() {
 	r.HandleFunc("/v1/spas", ShowSpaList)
 	r.HandleFunc("/v1/spa/{id}", ShowSpa)
 	r.HandleFunc("/v1/spa", CreateSpa).Methods("POST")
+	r.HandleFunc("/v1/user/{id}", GetUser)
 	http.Handle("/", r)
 
 	fmt.Printf("Server is running... localhost:8080")
