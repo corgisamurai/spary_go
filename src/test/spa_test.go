@@ -3,13 +3,10 @@ package test
 import (
 	"api"
 	"encoding/json"
-	_ "fmt"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
-	_ "net/url"
-	_ "strings"
 	"testing"
 )
 
