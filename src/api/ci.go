@@ -18,7 +18,7 @@ type Slack struct {
 }
 
 func Ci(w http.ResponseWriter, r *http.Request) {
-	url := "https://slack.com/api/channels.history?token=xoxp-113726990690-113821933188-153921848933-09450b3f41aff453189321dfdf60a4b3&channel=C4D8D3XMX&count=1&pretty=1"
+	url := "https://slack.com/api/channels.history?token=xoxp-113726990690-113803571044-155105854433-53ffb9d1664c00aa79aa1c425a68b131&channel=C4D8D3XMX&count=1&pretty=1"
 	req, _ := http.NewRequest("GET", url, nil)
 	client := new(http.Client)
 	resp, _ := client.Do(req)

@@ -4,8 +4,8 @@ import (
   "api"
   "batch"
   "fmt"
-  "os"
   "lib"
+  "os"
 )
 
 func main() {
@@ -14,8 +14,8 @@ func main() {
   if len(os.Args) == 1 {
     api.Run()
   } else if len(os.Args) == 2 {
-    funcs := map[string]func() {
-       "ImportOnsenList" : batch.ImportOnsenList,
+    funcs := map[string]func(){
+      "ImportOnsenList": batch.ImportOnsenList,
     }
     funcs[os.Args[1]]()
   } else {

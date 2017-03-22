@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"net/http"
+	"github.com/gorilla/mux"
 	"lib"
+	"net/http"
 )
 
 type Spas struct {
@@ -35,6 +36,20 @@ func ShowSpaList(w http.ResponseWriter, r *http.Request) {
 
 func ShowSpa(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("show spa")
+	vars := mux.Vars(r)
+	db := lib.DbOpen()
+	defer db.Close()
+
+	query := "select * from spa where id = ?"
+	row, _ := db.Query(query, vars["id"])
+	fmt.Println(vars["id"])
+	spa := Spa{}
+	for row.Next() {
+		row.Scan(&spa.Id, &spa.Name, &spa.Address)
+	}
+
+	result, _ := json.Marshal(spa)
+	fmt.Fprintf(w, string(result))
 }
 
 func CreateSpa(w http.ResponseWriter, r *http.Request) {
