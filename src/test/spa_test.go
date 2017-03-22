@@ -11,8 +11,8 @@ import (
 )
 
 func TestShowSpa(t *testing.T) {
-	db.Query("INSERT INTO spa (id, name, address) VALUES(?, ?, ?)", 1, "木下温泉", "北海道")
-	db.Query("INSERT INTO spa (id, name, address) VALUES(?, ?, ?)", 2, "木下温泉2", "北海道2")
+	newSpaRecord(1, "木下温泉", "北海道", "http://kika.pc/onsen")
+	newSpaRecord(2, "木下温泉2", "北海道2", "http://kika.pc/onsen2")
 
 	r := mux.NewRouter()
 	r.HandleFunc("/v1/spa/{id}", api.ShowSpa)
@@ -32,12 +32,12 @@ func TestShowSpa(t *testing.T) {
 
 	assertEqual(t, spa.Name, "木下温泉")
 	assertEqual(t, spa.Address, "北海道")
-	// assertEqual(t, spa.Url, "http://kika.pc/onsen")
+	assertEqual(t, spa.Url, "http://kika.pc/onsen")
 }
 
 func TestShowAnotherSpa(t *testing.T) {
-	db.Query("INSERT INTO spa (id, name, address) VALUES(?, ?, ?)", 1, "木下温泉", "北海道")
-	db.Query("INSERT INTO spa (id, name, address) VALUES(?, ?, ?)", 2, "木下温泉2", "北海道2")
+	newSpaRecord(1, "木下温泉", "北海道", "http://kika.pc/onsen")
+	newSpaRecord(2, "木下温泉2", "北海道2", "http://kika.pc/onsen2")
 
 	r := mux.NewRouter()
 	r.HandleFunc("/v1/spa/{id}", api.ShowSpa)
@@ -70,6 +70,10 @@ func execShowSpaList() *api.Spas {
 	spas := new(api.Spas)
 	json.Unmarshal(([]byte)(string(data)), spas)
 	return spas
+}
+
+func newSpaRecord(id int, name string, address string, url string) {
+	db.Query("INSERT INTO spa (id, name, address, url) VALUES(?, ?, ?, ?)", id, name, address, url)
 }
 
 func TestShowSpaList(t *testing.T) {
