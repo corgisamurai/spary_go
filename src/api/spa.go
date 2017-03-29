@@ -14,10 +14,16 @@ type Spas struct {
 }
 
 type Spa struct {
-	Id      string `json:"id"`
-	Name    string `json:"name"`
-	Address string `json:"address"`
-	Url     string `json:"url"`
+	Id        string `json:"id"`
+	Name      string `json:"name"`
+	Address   string `json:"address"`
+	Url       string `json:"url"`
+	Tel       string `json:"tel"`
+	Effect    string `json:"effect"`
+	Fee       string `json:"fee"`
+	Image     string `json:"image"`
+	Equipment string `json:"equipment"`
+	Workday   string `json:"workday"`
 }
 
 func ShowSpaList(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +50,7 @@ func ShowSpa(w http.ResponseWriter, r *http.Request) {
 	row, _ := db.Query(query, vars["id"])
 	spa := Spa{}
 	for row.Next() {
-		row.Scan(&spa.Id, &spa.Name, &spa.Address, &spa.Url)
+		row.Scan(&spa.Id, &spa.Name, &spa.Address, &spa.Url, &spa.Tel, &spa.Effect, &spa.Fee, &spa.Image, &spa.Equipment)
 	}
 
 	result, _ := json.Marshal(spa)
