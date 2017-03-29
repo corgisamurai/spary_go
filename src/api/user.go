@@ -5,6 +5,7 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 	"lib"
 	"net/http"
 )
@@ -30,4 +31,29 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	result, _ := json.Marshal(user)
 	fmt.Fprintf(w, string(result))
+}
+
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+	var user User
+	body, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		panic(err)
+	}
+
+	if err := r.Body.Close(); err != nil {
+		panic(err)
+	}
+
+	if err := json.Unmarshal(body, &user); err != nil {
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+		w.WriteHeader(422)
+		if err := json.NewEncoder(w).Encode(err); err != nil {
+			panic(err)
+		}
+	}
+
+	db := lib.DbOpen()
+	query := "insert into users (name, email, address) values (?, ?, ?)"
+	db.Query(query, user.Name, user.Email, user.Address)
 }
