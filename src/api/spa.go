@@ -32,9 +32,12 @@ func ShowSpaList(w http.ResponseWriter, r *http.Request) {
 
 	rows, _ := db.Query("SELECT * FROM spa")
 	spas := Spas{}
+
+	fmt.Println(rows)
+
 	for rows.Next() {
 		spa := Spa{}
-		rows.Scan(&spa.Id, &spa.Name, &spa.Address, &spa.Url)
+		rows.Scan(&spa.Id, &spa.Name, &spa.Address, &spa.Url, &spa.Tel, &spa.Effect, &spa.Fee, &spa.Image, &spa.Equipment, &spa.Workday)
 		spas.Spas = append(spas.Spas, spa)
 	}
 	result, _ := json.Marshal(spas)
@@ -50,7 +53,7 @@ func ShowSpa(w http.ResponseWriter, r *http.Request) {
 	row, _ := db.Query(query, vars["id"])
 	spa := Spa{}
 	for row.Next() {
-		row.Scan(&spa.Id, &spa.Name, &spa.Address, &spa.Url, &spa.Tel, &spa.Effect, &spa.Fee, &spa.Image, &spa.Equipment)
+		row.Scan(&spa.Id, &spa.Name, &spa.Address, &spa.Url, &spa.Tel, &spa.Effect, &spa.Fee, &spa.Image, &spa.Equipment, &spa.Workday)
 	}
 
 	result, _ := json.Marshal(spa)
