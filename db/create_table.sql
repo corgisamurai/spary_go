@@ -21,6 +21,13 @@ CREATE TABLE IF NOT EXISTS users (
   PRIMARY KEY (id)
 );
 
+create table if not exists comments (
+  id mediumint not null auto_increment,
+  spa_id mediumint not null,
+  user_id mediumint not null,
+  comment text,
+  PRIMARY KEY (id)
+);
 
 USE spary_test;
 CREATE TABLE IF NOT EXISTS spa (
@@ -39,4 +46,10 @@ CREATE TABLE IF NOT EXISTS users (
   PRIMARY KEY (id)
 );
 
-
+create table if not exists comments (
+  id mediumint not null auto_increment,
+  spa_id mediumint not null,
+  user_id mediumint not null,
+  comment text,
+  PRIMARY KEY (id)
+);
