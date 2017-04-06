@@ -35,6 +35,12 @@ CREATE TABLE IF NOT EXISTS spa (
   name VARCHAR(255),
   address VARCHAR(255),
   url VARCHAR(255),
+  tel VARCHAR(255),
+  effect TEXT,
+  fee INTEGER,
+  image VARCHAR(255),
+  equipment VARCHAR(255),
+  workday VARCHAR(255),
   PRIMARY KEY (id)
 );
 

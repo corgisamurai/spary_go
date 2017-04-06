@@ -3,6 +3,7 @@ package test
 import (
 	"api"
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
@@ -91,6 +92,10 @@ func TestShowAnotherSpa(t *testing.T) {
 	data, _ := ioutil.ReadAll(resp.Body)
 	spa := new(api.Spa)
 	json.Unmarshal(([]byte)(string(data)), spa)
+
+	fmt.Println("==============")
+	fmt.Println(spa.Name)
+	fmt.Println("==============")
 
 	assertEqual(t, spa.Name, "木下温泉2")
 	assertEqual(t, spa.Address, "北海道2")
