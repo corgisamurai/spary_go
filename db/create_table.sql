@@ -29,6 +29,13 @@ create table if not exists comments (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS favorite (
+  id MEDIUMINT NOT NULL AUTO_INCREMENT,
+  user_id INTEGER,
+  spa_id INTEGER,
+  PRIMARY KEY (id)
+);
+
 USE spary_test;
 CREATE TABLE IF NOT EXISTS spa (
   id MEDIUMINT NOT NULL AUTO_INCREMENT,
@@ -57,5 +64,12 @@ create table if not exists comments (
   spa_id mediumint not null,
   user_id mediumint not null,
   comment text,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS favorite (
+  id MEDIUMINT NOT NULL AUTO_INCREMENT,
+  user_id INTEGER,
+  spa_id INTEGER,
   PRIMARY KEY (id)
 );
