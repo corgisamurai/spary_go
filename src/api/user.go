@@ -3,11 +3,12 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"lib"
 	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 )
 
 type User struct {
@@ -56,4 +57,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	db := lib.DbOpen()
 	query := "insert into users (name, email, address) values (?, ?, ?)"
 	db.Query(query, user.Name, user.Email, user.Address)
+}
+
+func AuthUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, string("success"))
 }

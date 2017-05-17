@@ -2,8 +2,9 @@ package api
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func Run() {
@@ -14,6 +15,7 @@ func Run() {
 	r.HandleFunc("/v1/spa", CreateSpa).Methods("POST")
 	r.HandleFunc("/v1/user/{id}", GetUser)
 	r.HandleFunc("/v1/user", CreateUser).Methods("POST")
+	r.HandleFunc("/v1/auth", AuthUser).Methods("GET")
 	r.HandleFunc("/v1/comment", CreateUser).Methods("POST")
 	http.Handle("/", r)
 

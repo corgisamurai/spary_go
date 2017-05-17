@@ -3,12 +3,13 @@ package test
 import (
 	"api"
 	"encoding/json"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 )
 
 func TestGetUser(t *testing.T) {
@@ -50,5 +51,23 @@ func TestGetUserJson(t *testing.T) {
 	}
 	if user.Address != "test address" {
 		t.Fatalf("not test address, %s", user.Address)
+	}
+}
+
+func TestAuth(t *testing.T) {
+	router := mux.NewRouter()
+	router.HandleFunc("/v1/auth", api.AuthUser)
+	testServer := httptest.NewServer(router)
+	defer testServer.Close()
+
+	url := testServer.URL + "/v1/auth"
+	resp, err := http.Get(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data, _ := ioutil.ReadAll(resp.Body)
+	if string(data) != "success" {
+		t.Fatalf("not test address, %s", string(data))
 	}
 }
