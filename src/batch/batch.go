@@ -3,6 +3,7 @@ package batch
 import (
   "encoding/xml"
   "fmt"
+  "lib"
   "io/ioutil"
 	_ "github.com/go-sql-driver/mysql"
 	"net/http"
@@ -54,5 +55,24 @@ func ImportOnsenList() {
     return
   }
 
-  fmt.Println(results)
+  db := lib.DbOpen()
+  defer db.Close()
+
+  query := "INSERT INTO spa ("
+  query += "name,"
+  query += "address,"
+  query += "url,"
+  query += "effect"
+  query += ") VALUES ("
+  query += "?,"
+  query += "?,"
+  query += "?,"
+  query += "?"
+  query += ")"
+
+  db.Query(query,
+    results.Onsen[0].OnsenName,
+    results.Onsen[0].OnsenAddress,
+    results.Onsen[0].OnsenAreaURL,
+    results.Onsen[0].NatureOfOnsen)
 }
