@@ -60,5 +60,20 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func AuthUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, string("success"))
+	vars := mux.Vars(r)
+	db := lib.DbOpen()
+	defer db.Close()
+
+	query := "select * from users where name = ? and password = ?"
+	row, _ := db.Query(query, vars["name"], vars["pass"])
+
+	count := 0
+	for row.Next() {
+		row.Scan(&count)
+	}
+	if count == 0 {
+		fmt.Fprintf(w, "fail")
+	} else {
+		fmt.Fprintf(w, "success")
+	}
 }

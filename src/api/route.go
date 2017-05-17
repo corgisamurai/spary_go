@@ -15,7 +15,7 @@ func Run() {
 	r.HandleFunc("/v1/spa", CreateSpa).Methods("POST")
 	r.HandleFunc("/v1/user/{id}", GetUser)
 	r.HandleFunc("/v1/user", CreateUser).Methods("POST")
-	r.HandleFunc("/v1/auth", AuthUser).Methods("GET")
+	r.HandleFunc("/v1/auth/{name}/{pass}", AuthUser).Methods("GET")
 	r.HandleFunc("/v1/comment", CreateUser).Methods("POST")
 	http.Handle("/", r)
 

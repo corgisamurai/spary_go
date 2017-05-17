@@ -54,13 +54,36 @@ func TestGetUserJson(t *testing.T) {
 	}
 }
 
-func TestAuth(t *testing.T) {
+func TestAuthFail(t *testing.T) {
 	router := mux.NewRouter()
-	router.HandleFunc("/v1/auth", api.AuthUser)
+	router.HandleFunc("/v1/auth/kanai/pass", api.AuthUser)
 	testServer := httptest.NewServer(router)
 	defer testServer.Close()
 
-	url := testServer.URL + "/v1/auth"
+	url := testServer.URL + "/v1/auth/kanai/pass"
+	resp, err := http.Get(url)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data, _ := ioutil.ReadAll(resp.Body)
+	if string(data) != "fail" {
+		t.Fatalf("not fail", string(data))
+	}
+}
+
+func TestAuthSuccess(t *testing.T) {
+	db.Query(
+		"INSERT INTO users (name, pasword) VALUES(?, ?)",
+		"kanai", "pass",
+	)
+
+	router := mux.NewRouter()
+	router.HandleFunc("/v1/auth/kanai/pass", api.AuthUser)
+	testServer := httptest.NewServer(router)
+	defer testServer.Close()
+
+	url := testServer.URL + "/v1/auth/kanai/pass"
 	resp, err := http.Get(url)
 	if err != nil {
 		t.Fatal(err)
@@ -68,6 +91,6 @@ func TestAuth(t *testing.T) {
 
 	data, _ := ioutil.ReadAll(resp.Body)
 	if string(data) != "success" {
-		t.Fatalf("not test address, %s", string(data))
+		t.Fatalf("not success", string(data))
 	}
 }
