@@ -1,20 +1,12 @@
 package test
 
-import (
-	"api"
-	"encoding/json"
-	"github.com/gorilla/mux"
-	"io/ioutil"
-	"net/http"
-	"net/http/httptest"
-	"testing"
-)
+import "testing"
 
-type Spa struct {
-	Id     string `json:"id"`
-	UserId string `json:"user_id"`
-	SpaId  string `json:"spa_id"`
-}
+// type Spa struct {
+// 	Id     string `json:"id"`
+// 	UserId string `json:"user_id"`
+// 	SpaId  string `json:"spa_id"`
+//}
 
 func TestAddFavorite(t *testing.T) {
 	// r := mux.NewRouter()

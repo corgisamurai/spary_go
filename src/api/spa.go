@@ -3,10 +3,11 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/mux"
 	"lib"
 	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 )
 
 type Spas struct {
@@ -32,8 +33,6 @@ func ShowSpaList(w http.ResponseWriter, r *http.Request) {
 
 	rows, _ := db.Query("SELECT * FROM spa")
 	spas := Spas{}
-
-	fmt.Println(rows)
 
 	for rows.Next() {
 		spa := Spa{}
