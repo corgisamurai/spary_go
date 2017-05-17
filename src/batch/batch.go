@@ -49,6 +49,7 @@ func ImportOnsenList() {
   results := Results{}
   err := xml.Unmarshal(byteArray, &results)
   if err != nil {
+    fmt.Println("ERROR:")
     fmt.Println(string(byteArray))
     return
   }
