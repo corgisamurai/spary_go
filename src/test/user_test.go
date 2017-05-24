@@ -22,7 +22,7 @@ func TestGetUser(t *testing.T) {
 	}
 }
 
-func TestGetUserJson(t *testing.T) {
+func xTestGetUserJson(t *testing.T) {
 	db.Query(
 		"INSERT INTO users (id, name, email, address) VALUES(?, ?, ?, ?)",
 		1, "test name", "test@sample.com", "test address")
@@ -72,7 +72,7 @@ func TestAuthFail(t *testing.T) {
 	}
 }
 
-func TestAuthSuccess(t *testing.T) {
+func xTestAuthSuccess(t *testing.T) {
 	db.Query(
 		"INSERT INTO users (name, pasword) VALUES(?, ?)",
 		"kanai", "pass",
