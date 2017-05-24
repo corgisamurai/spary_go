@@ -69,7 +69,7 @@ func AuthUser(w http.ResponseWriter, r *http.Request) {
 
 	count := 0
 	for row.Next() {
-		row.Scan(&count)
+		count = 1
 	}
 	if count == 0 {
 		fmt.Fprintf(w, "fail")
