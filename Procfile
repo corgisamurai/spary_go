@@ -1,0 +1,1 @@
+web: spary_go
