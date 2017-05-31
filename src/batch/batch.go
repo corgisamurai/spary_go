@@ -39,42 +39,40 @@ type Area struct {
 }
 
 func ImportOnsenList() {
-	url := "http://jws.jalan.net/APICommon/OnsenSearch/V1/?key=aqr15a41839ced&pref=010000&xml_ptn=1"
-	req, _ := http.NewRequest("GET", url, nil)
-	client := new(http.Client)
-	resp, _ := client.Do(req)
-	defer resp.Body.Close()
+	for i := 1; i < 48; i++ {
 
-	byteArray, _ := ioutil.ReadAll(resp.Body)
+		url := "http://jws.jalan.net/APICommon/OnsenSearch/V1/?key=aqr15a41839ced&pref="
+		url += fmt.Sprintf("%02d", i)
+		url += "0000&xml_ptn=1"
 
-	results := Results{}
-	err := xml.Unmarshal(byteArray, &results)
-	if err != nil {
-		fmt.Println("ERROR:")
-		fmt.Println(string(byteArray))
-		return
-	}
+		req, _ := http.NewRequest("GET", url, nil)
+		client := new(http.Client)
+		resp, _ := client.Do(req)
+		defer resp.Body.Close()
 
-	db := lib.DbOpen()
-	defer db.Close()
+		byteArray, _ := ioutil.ReadAll(resp.Body)
 
-	query := "INSERT INTO spa ("
-	query += "name,"
-	query += "address,"
-	query += "url,"
-	query += "effect"
-	query += ") VALUES ("
-	query += "?,"
-	query += "?,"
-	query += "?,"
-	query += "?"
-	query += ")"
+		results := Results{}
+		err := xml.Unmarshal(byteArray, &results)
+		if err != nil {
+			fmt.Println("ERROR:")
+			fmt.Println(string(byteArray))
+			return
+		}
 
-	for i := range results.Onsen {
-		db.Query(query,
-			results.Onsen[i].OnsenName,
-			results.Onsen[i].OnsenAddress,
-			results.Onsen[i].OnsenAreaURL,
-			results.Onsen[i].NatureOfOnsen)
+		db := lib.DbOpen()
+
+		query := "INSERT INTO spa"
+		query += "(name, address, url, effect)"
+		query += "VALUES (? ,? ,? ,?)"
+
+		for i := range results.Onsen {
+			db.Query(query,
+				results.Onsen[i].OnsenName,
+				results.Onsen[i].OnsenAddress,
+				results.Onsen[i].OnsenAreaURL,
+				results.Onsen[i].NatureOfOnsen)
+		}
+		db.Close()
 	}
 }
